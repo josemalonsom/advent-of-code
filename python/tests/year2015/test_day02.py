@@ -9,7 +9,7 @@ class TestDay02:
         (["2x3x4"], 58, 34),
         (["1x1x10"], 43, 14)
     ])
-    def test_wrapping_paper_examples(self, puzzle_input, expected_wrapping_paper, expected_ribbon):
+    def test_examples(self, puzzle_input, expected_wrapping_paper, expected_ribbon):
         result = solve(puzzle_input)
 
         assert result["total_square_feet_of_wrapping_paper"] == expected_wrapping_paper
