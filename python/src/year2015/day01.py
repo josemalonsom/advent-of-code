@@ -3,8 +3,6 @@
 # https://adventofcode.com/2015/day/1
 
 UP = "("
-# input_file = open("day-01-input.txt", "r")
-# puzzle_input = input_file.read()
 
 def solve(puzzle_input):
     input_array = ([*puzzle_input])
