@@ -22,6 +22,7 @@ class TestDay01:
 
     def test_puzzle(self):
         puzzle_input = get_file("data.year2015", "day01-input.txt").read()
+        result = solve(puzzle_input)
 
-        assert solve(puzzle_input)["current_floor"] == 74
-        assert solve(puzzle_input)["position_character_taking_to_basement"] == 1795
+        assert result["current_floor"] == 74
+        assert result["position_character_taking_to_basement"] == 1795
