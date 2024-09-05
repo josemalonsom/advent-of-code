@@ -16,7 +16,7 @@ class TestDay02:
         assert result["total_ribbon_length"] == expected_ribbon
 
     def test_puzzle(self):
-        puzzle_input = get_file("data.year2015", "day-02-input.txt").readlines()
+        puzzle_input = get_file("data.year2015", "day02-input.txt").readlines()
         result = solve(puzzle_input)
 
         assert result["total_square_feet_of_wrapping_paper"] == 1606483
