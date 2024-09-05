@@ -1,5 +1,5 @@
-import importlib.resources
+from importlib import resources
 
 def get_file(package, file_name):
-        with importlib.resources.as_file(importlib.resources.files(package).joinpath(file_name)) as fixture:
+        with resources.as_file(resources.files(package).joinpath(file_name)) as fixture:
             return open(fixture, "r")
