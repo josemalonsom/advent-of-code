@@ -4,6 +4,7 @@
 
 UP = "("
 
+
 def solve(puzzle_input):
     input_array = ([*puzzle_input])
     current_floor = 0

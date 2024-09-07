@@ -3,6 +3,7 @@ import pytest
 from tests.helper import get_file
 from year2015.day02 import solve
 
+
 class TestDay02:
 
     @pytest.mark.parametrize("puzzle_input, expected_wrapping_paper, expected_ribbon", [

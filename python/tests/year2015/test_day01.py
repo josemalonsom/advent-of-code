@@ -3,6 +3,7 @@ import pytest
 from tests.helper import get_file
 from year2015.day01 import solve
 
+
 class TestDay01:
 
     @pytest.mark.parametrize("puzzle_input, expected_result", [
