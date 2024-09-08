@@ -3,7 +3,7 @@ import pytest
 from year2015.day04 import solve_puzzle
 
 
-class TestDay03:
+class TestDay04:
 
     @pytest.mark.parametrize("puzzle_input, expected_answer", [
         ("abcdef", 609043),

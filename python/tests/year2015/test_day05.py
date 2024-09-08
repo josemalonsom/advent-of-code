@@ -4,7 +4,7 @@ from tests.helper import get_file
 from year2015.day05 import solve_puzzle_1, solve_puzzle_2
 
 
-class TestDay03:
+class TestDay05:
 
     @pytest.mark.parametrize("puzzle_input, expected_number_of_nice_strings", [
         (["ugknbfddgicrmopn"], 1),
