@@ -1,104 +1,69 @@
 #!/usr/bin/env python3
-import re
 
 # https://adventofcode.com/2015/day/7
 
+operations_by_wire = {}
+values_by_wire = {}
 
-def solve_puzzle_1(puzzle_input):
 
-    pattern = re.compile("(.*) -> (.*)")
-    operations_by_wire = {}
+def solve_puzzle_1(puzzle_input, wire):
+
+    operations_by_wire.clear()
+    values_by_wire.clear()
 
     for instruction in puzzle_input:
+        operation, output_wire = [item.strip() for item in instruction.split("->")]
+        operations_by_wire[output_wire] = [item.strip() for item in operation.split()]
 
-        match = pattern.match(instruction)
-        operation = match.group(1)
-        wire = match.group(2)
-
-        operations_by_wire[wire] = operation
-
-    output_by_wire = {}
-
-    for wire in operations_by_wire:
-
-        output_by_wire[wire] = get_wire_output(wire, operations_by_wire, output_by_wire)
-
-    return output_by_wire
+    return get_wire_output(wire)
 
 
-def get_wire_output(wire, operations_by_wire, output_by_wire):
+def get_wire_output(wire):
+
+    if wire in values_by_wire:
+        return values_by_wire[wire]
 
     operation = operations_by_wire[wire]
 
-    # send signal to wire: 123 -> x
-    if re.match("[0-9]+(?!.*[A-Z].*)", operation):
-        return int(operation)
+    match len(operation):
+        case 2:
+            operator = operation[0]
+        case 3:
+            operator = operation[1]
+        case _:
+            operator = "SIGNAL"
 
-    # [0-9] AND y -> d
-    match = re.match("([0-9]+) AND (.*)", operation)
-    if match:
-        signal = int(match.group(1))
-        wire2 = match.group(2)
+    match operator:
+        case "SIGNAL":
+            isnumeric = operation[0].isnumeric()
+            output = operation[0] if isnumeric else get_wire_output(operation[0])
+        case "AND":
+            left_value = int(operation[0]) if operation[0].isnumeric() else get_wire_output(operation[0])
+            output = left_value & get_wire_output(operation[2])
+        case "LSHIFT":
+            output = get_wire_output(operation[0]) << int(operation[2])
+        case "RSHIFT":
+            output = get_wire_output(operation[0]) >> int(operation[2])
+        case "OR":
+            output = get_wire_output(operation[0]) | get_wire_output(operation[2])
+        case "NOT":
+            output = 65536 + (~ get_wire_output(operation[1]))
+        case _:
+            raise Exception(f"Operation not identified: {operation} wire: {wire}")
 
-        if wire2 not in output_by_wire:
-            output_by_wire[wire2] = get_wire_output(wire2, operations_by_wire, output_by_wire)
+    values_by_wire[wire] = int(output)
 
-        return signal & output_by_wire[wire2]
+    return values_by_wire[wire]
 
-    # x AND y -> d
-    match = re.match("(.*) AND (.*)", operation)
-    if match:
-        wire1 = match.group(1)
-        wire2 = match.group(2)
 
-        if wire1 not in output_by_wire:
-            output_by_wire[wire1] = get_wire_output(wire1, operations_by_wire, output_by_wire)
-        if wire2 not in output_by_wire:
-            output_by_wire[wire2] = get_wire_output(wire2, operations_by_wire, output_by_wire)
+def solve_puzzle_2(puzzle_input, wire):
 
-        return output_by_wire[wire1] & output_by_wire[wire2]
+    operations_by_wire.clear()
+    values_by_wire.clear()
+    values_by_wire["b"] = 16076
 
-    # x OR y -> e
-    match = re.match("(.*) OR (.*)", operation)
-    if match:
-        wire1 = match.group(1)
-        wire2 = match.group(2)
+    for instruction in puzzle_input:
+        operation, output_wire = [item.strip() for item in instruction.split("->")]
+        operations_by_wire[output_wire] = [item.strip() for item in operation.split()]
 
-        if wire1 not in output_by_wire:
-            output_by_wire[wire1] = get_wire_output(wire1, operations_by_wire, output_by_wire)
-        if wire2 not in output_by_wire:
-            output_by_wire[wire2] = get_wire_output(wire2, operations_by_wire, output_by_wire)
-
-        return output_by_wire[wire1] | output_by_wire[wire2]
-
-    # p LSHIFT 2 -> q
-    match = re.match("(.*) LSHIFT (.*)", operation)
-    if match:
-        wire1 = match.group(1)
-        positions = int(match.group(2))
-
-        if wire1 not in output_by_wire:
-            output_by_wire[wire1] = get_wire_output(wire1, operations_by_wire, output_by_wire)
-
-        return output_by_wire[wire1] << positions
-
-    # y RSHIFT 2 -> g
-    match = re.match("(.*) RSHIFT (.*)", operation)
-    if match:
-        wire1 = match.group(1)
-        positions = int(match.group(2))
-
-        if wire1 not in output_by_wire:
-            output_by_wire[wire1] = get_wire_output(wire1, operations_by_wire, output_by_wire)
-
-        return output_by_wire[wire1] >> positions
-
-    # NOT x -> h
-    match = re.match("NOT (.*)", operation)
-    if match:
-        wire1 = match.group(1)
-
-        if wire1 not in output_by_wire:
-            output_by_wire[wire1] = get_wire_output(wire1, operations_by_wire, output_by_wire)
-
-        return 65536 + (~ output_by_wire[wire1])
+    return get_wire_output(wire)
