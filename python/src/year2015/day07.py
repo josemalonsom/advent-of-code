@@ -9,13 +9,17 @@ values_by_wire = {}
 def solve_puzzle_1(puzzle_input, wire):
 
     operations_by_wire.clear()
+    populate_operations_by_wire(puzzle_input)
+
     values_by_wire.clear()
 
+    return get_wire_output(wire)
+
+
+def populate_operations_by_wire(puzzle_input):
     for instruction in puzzle_input:
         operation, output_wire = [item.strip() for item in instruction.split("->")]
         operations_by_wire[output_wire] = [item.strip() for item in operation.split()]
-
-    return get_wire_output(wire)
 
 
 def get_wire_output(wire):
@@ -59,11 +63,9 @@ def get_wire_output(wire):
 def solve_puzzle_2(puzzle_input, wire):
 
     operations_by_wire.clear()
+    populate_operations_by_wire(puzzle_input)
+
     values_by_wire.clear()
     values_by_wire["b"] = 16076
-
-    for instruction in puzzle_input:
-        operation, output_wire = [item.strip() for item in instruction.split("->")]
-        operations_by_wire[output_wire] = [item.strip() for item in operation.split()]
 
     return get_wire_output(wire)
