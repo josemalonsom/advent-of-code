@@ -2,7 +2,7 @@ from tests.helper import get_file
 from year2015.day08 import solve_puzzle_1, solve_puzzle_2
 
 
-class TestDay07:
+class TestDay08:
 
     def test_examples_puzzle_1(self):
 
